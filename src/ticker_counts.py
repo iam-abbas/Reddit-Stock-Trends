@@ -6,6 +6,7 @@ from functools import reduce
 from operator import add
 from typing import Set
 from datetime import datetime
+from urllib.error import HTTPError
 
 import pandas as pd
 import praw
@@ -13,7 +14,7 @@ import yfinance as yf
 from tqdm import tqdm
 
 
-WEBSCRAPER_LIMIT = 2000
+WEBSCRAPER_LIMIT = 2_000
 CLIENT_ID = "9Aq-wTeGLJBKsQ"
 CLIENT_SECRET = "EclWNx5qOyIZLiRkd10Oln0iNPUXvQ"
 USER_AGENT = "ScrapeStocks"
@@ -86,7 +87,8 @@ for ticker, ticker_count in tqdm(counts.items(), desc="Filtering verified ticks"
         try:
             _ = yf.Ticker(ticker).info
             verified_tics[ticker] = ticker_count
-        except KeyError:  # Non-existant ticker
+        except (KeyError, HTTPError, ImportError) as e:  # Non-existant ticker
+            print(e)
             pass
 
 # Create Datable of just mentions
