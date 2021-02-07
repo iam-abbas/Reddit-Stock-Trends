@@ -44,7 +44,7 @@ block_words = set(["DIP", "", "$", "RH", "YOLO", "PORN", "BEST", "MOON", "HOLD",
 reddit = praw.Reddit(client_id=CLIENT_ID,
                      client_secret=CLIENT_SECRET,
                      user_agent=USER_AGENT)
-new_bets = reddit.subreddit("robinhoodpennystocks+pennystocks+trakstocks").new(limit=WEBSCRAPER_LIMIT)
+new_bets = reddit.subreddit("robinhoodpennystocks+pennystocks").new(limit=WEBSCRAPER_LIMIT)
 
 posts = [[post.id,
           post.title,
