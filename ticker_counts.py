@@ -45,7 +45,7 @@ posts = [[post.id,
           post.score,
           post.num_comments,
           post.upvote_ratio,
-          post.total_awards_received] for post in tqdm(new_bets, desc="Selecting relevant data from webscraper", limit=WEBSCRAPER_LIMIT)]
+          post.total_awards_received] for post in tqdm(new_bets, desc="Selecting relevant data from webscraper", total=WEBSCRAPER_LIMIT)]
 posts = pd.DataFrame(posts, columns=["id",
                                      "title",
                                      "score",
