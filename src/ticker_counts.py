@@ -98,7 +98,6 @@ tick_df.reset_index(inplace=True, drop=True)
 
 date_created = datetime.today().strftime('%Y-%m-%d')
 csv_filename = f"{date_created}_tick_df"
-
 directory_output = "./data"
 
 if not os.path.exists(directory_output):
