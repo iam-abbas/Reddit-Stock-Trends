@@ -9,6 +9,7 @@ import praw
 import yfinance as yf
 from tqdm import tqdm
 
+
 WEBSCRAPER_LIMIT = 2_000
 CLIENT_ID = "9Aq-wTeGLJBKsQ"
 CLIENT_SECRET = "EclWNx5qOyIZLiRkd10Oln0iNPUXvQ"
@@ -16,7 +17,7 @@ USER_AGENT = "ScrapeStocks"
 
 # Stop words and Blacklist containing jargon/acronyms
 # I added GME and AMC in there lmao, tired of seeing those
-stop_words = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "you're", "you've", "you'll", "you'd", "your", "yours",
+stop_words = set(["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "you're", "you've", "you'll", "you'd", "your", "yours",
               "yourself", "yourselves", "he", "him", "his", "himself", "she", "she's", "her", "hers", "herself", "it", "it's", "its",
               "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "that'll",
               "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does",
@@ -28,9 +29,10 @@ stop_words = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you"
               "now", "d", "ll", "m", "o", "re", "ve", "y", "ain", "aren", "aren't", "couldn", "couldn't", "didn", "didn't", "doesn",
               "doesn't", "hadn", "hadn't", "hasn", "hasn't", "haven", "haven't", "isn", "isn't", "ma", "mightn", "mightn't", "must",
               "mustn", "mustn't", "needn", "needn't", "shan", "shan't", "shouldn", "shouldn't", "wasn", "wasn't", "weren", "weren't",
-              "won", "won't", "wouldn", "wouldn't"]
-block_words = ["DIP", "", "$", "RH", "YOLO", "PORN", "BEST", "MOON", "HOLD", "FAKE", "WISH", "USD", "EV", "MARK", "RELAX", "LOL", "LMAO",
-               "LMFAO", "EPS", "DCF", "NYSE", "FTSE", "APE", "CEO", "CTO", "FUD", "DD", "AM", "PM", "FDD", "EDIT", "TA", "UK", "AMC", "GME"]
+              "won", "won't", "wouldn", "wouldn't"])
+
+block_words = set(["DIP", "", "$", "RH", "YOLO", "PORN", "BEST", "MOON", "HOLD", "FAKE", "WISH", "USD", "EV", "MARK", "RELAX", "LOL", "LMAO",
+               "LMFAO", "EPS", "DCF", "NYSE", "FTSE", "APE", "CEO", "CTO", "FUD", "DD", "AM", "PM", "FDD", "EDIT", "TA", "UK", "AMC", "GME"])
 
 
 # Scrape subreddits `r/robinhoodpennystocks` and `r/pennystocks`
@@ -89,5 +91,6 @@ tick_df = pd.DataFrame(verified_tics.items(), columns=["Ticker", "Mentions"])
 tick_df.sort_values(by=["Mentions"], inplace=True, ascending=False)
 tick_df.reset_index(inplace=True, drop=True)
 
-tick_df.to_csv("./data/tick_df.csv", index=False)  # Save to file to load into yahoo analysis script
-print(tick_df.head())
+with open('./data/tick_df.csv', 'w+') as file:  # Use file to refer to the file object
+    tick_df.to_csv("./data/tick_df.csv", index=False) # Save to file to load into yahoo analysis script
+    print(tick_df.head())
