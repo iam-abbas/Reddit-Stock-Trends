@@ -9,6 +9,7 @@ import praw
 import yfinance as yf
 from tqdm import tqdm
 
+
 WEBSCRAPER_LIMIT = 2_000
 CLIENT_ID = "9Aq-wTeGLJBKsQ"
 CLIENT_SECRET = "EclWNx5qOyIZLiRkd10Oln0iNPUXvQ"
