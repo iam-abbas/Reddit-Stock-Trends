@@ -7,13 +7,19 @@ from typing import Set
 import pandas as pd
 import praw
 import yfinance as yf
+
+from dotenv import load_dotenv
+load_dotenv()
+import os
+
 from tqdm import tqdm
 
 
 WEBSCRAPER_LIMIT = 2_000
-CLIENT_ID = "9Aq-wTeGLJBKsQ"
-CLIENT_SECRET = "EclWNx5qOyIZLiRkd10Oln0iNPUXvQ"
-USER_AGENT = "ScrapeStocks"
+
+CLIENT_ID = os.environ.get("client_id") or "9Aq-wTeGLJBKsQ"
+CLIENT_SECRET = os.environ.get("client_secret") or "EclWNx5qOyIZLiRkd10Oln0iNPUXvQ"
+USER_AGENT = os.environ.get("user_agent") or "ScrapeStocks"
 
 # Stop words and Blacklist containing jargon/acronyms
 # I added GME and AMC in there lmao, tired of seeing those
