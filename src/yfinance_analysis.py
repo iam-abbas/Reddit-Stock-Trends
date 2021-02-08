@@ -19,20 +19,33 @@ tick_df = pd.read_csv(
     "./data/tick_df.csv").sort_values(by=["Mentions", "Ticker"], ascending=False)
 tick_df.dropna(axis=1)
 
+dataColumns = ["Name", "Industry", "Previous Close", "5d Low", "5d High", "1d Change (%)", "5d Change (%)", "1mo Change (%)"]
+
+def getTickerInfo(ticker):
+    
+  # Standard Data
+  info = yf.Ticker(ticker).info
+  tickerName = info["longName"]
+  tickerIndustry = info["industry"]
+
+  # previous Day close
+  tickerClose = yf.Ticker(ticker).history(period="1d")["Close"].to_list()[-1]
+
+  # Highs and Lows
+  highLow = yf.Ticker(ticker).history(period="5d")
+  Low5d = min(highLow["Low"].to_list())
+  High5d = max(highLow["High"].to_list())
+
+  # Changes
+  change1d = get_change(ticker)
+  change5d = get_change(ticker, "5d")
+  change1mo = get_change(ticker, "1mo")
+
+  return pd.Series([tickerName, tickerIndustry, tickerClose, Low5d, High5d, change1d, change5d, change1mo])
+
+
 df_best = tick_df.head(BEST_N)
-df_best["Name"] = df_best.Ticker.apply(lambda x: yf.Ticker(x).info["longName"])
-df_best["Previous Close"] = df_best.Ticker.apply(
-    lambda x: yf.Ticker(x).info["previousClose"])
-df_best["5d Low"] = df_best.Ticker.apply(lambda x: min(
-    yf.Ticker(x).history(period="5d")["Low"].to_list()))
-df_best["5d High"] = df_best.Ticker.apply(lambda x: max(
-    yf.Ticker(x).history(period="5d")["High"].to_list()))
-df_best["1d Change (%)"] = df_best.Ticker.apply(get_change)
-df_best["5d Change (%)"] = df_best.Ticker.apply(lambda x: get_change(x, "5d"))
-df_best["1mo Change (%)"] = df_best.Ticker.apply(
-    lambda x: get_change(x, "1mo"))
-df_best["Industry"] = df_best.Ticker.apply(
-    lambda x: yf.Ticker(x).info["industry"])
+df_best[dataColumns] = df_best.Ticker.apply(getTickerInfo)
 
 
 # Save to file to load into yahoo analysis script
