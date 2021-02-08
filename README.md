@@ -25,6 +25,7 @@ CLIENT_ID=<your client id>
 CLIENT_SECRET=<your client secret>
 USER_AGENT=<your user agent>
 ```
+- install required modules using `pip install -r requirements.txt`
 - Run `ticker_count.py` first
 - Now run `yfinance_analysis.py`
 - You will be able to find your results in `data/` directory.
