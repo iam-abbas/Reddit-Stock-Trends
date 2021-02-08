@@ -15,12 +15,12 @@ from urllib.error import HTTPError
 import yfinance as yf
 from tqdm import tqdm
 
-#JB 02/07/2021 - Configparser introduced to scrape out some hardcode and allow removal of sensitive passwords
+# JB 02/07/2021 - Configparser introduced to scrape out some hardcode and allow removal of sensitive passwords
 
 WEBSCRAPER_LIMIT = 2_000
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('./config/config.ini')
 
 CLIENT_ID = config['RedditApi']['ClientId']
 CLIENT_SECRET = config['RedditApi']['ClientSecret']
@@ -78,8 +78,7 @@ for ticker, ticker_count in tqdm(counts.items(), desc="Filtering verified ticks"
         try:
             _ = yf.Ticker(ticker).info
             verified_tics[ticker] = ticker_count
-        except (KeyError, HTTPError, ImportError) as e:  # Non-existant ticker
-            print(e)
+        except:  # Non-existant ticker
             pass
 
 # Create Datable of just mentions
@@ -94,8 +93,9 @@ directory_output = "./data"
 if not os.path.exists(directory_output):
     os.mkdir(directory_output)
 
-full_output_path =f"{directory_output}/{csv_filename}.csv"
+full_output_path = f"{directory_output}/{csv_filename}.csv"
 
 with open(full_output_path, "w+") as file:  # Use file to refer to the file object
-    tick_df.to_csv(full_output_path, index=False) # Save to file to load into yahoo analysis script
+    # Save to file to load into yahoo analysis script
+    tick_df.to_csv(full_output_path, index=False)
     print(tick_df.head())
