@@ -1,6 +1,8 @@
 import yfinance as yf
 import pandas as pd
 
+from datetime import datetime
+
 BEST_N = 25  # The first N stocks, ordered by number of mentions
 
 
@@ -15,8 +17,13 @@ def get_change(ticker: str, period: str = "1d") -> float:
 
 
 # Load data from file, generate data by running the `ticker_counts.py` script
-tick_df = pd.read_csv(
-    "data/tick_df.csv").sort_values(by=["Mentions", "Ticker"], ascending=False)
+date_created = datetime.today().strftime('%Y-%m-%d')
+csv_filename = f"{date_created}_tick_df"
+data_directory = "./data"
+
+full_input_path = f"{data_directory}/{csv_filename}.csv"
+
+tick_df = pd.read_csv(full_input_path).sort_values(by=["Mentions", "Ticker"], ascending=False)
 tick_df.dropna(axis=1)
 
 dataColumns = ["Name", "Industry", "Previous Close", "5d Low", "5d High", "1d Change (%)", "5d Change (%)", "1mo Change (%)"]
@@ -49,5 +56,8 @@ df_best[dataColumns] = df_best.Ticker.apply(getTickerInfo)
 
 
 # Save to file to load into yahoo analysis script
-df_best.to_csv(f"./data/df_best_{BEST_N}.csv", index=False)
+csv_filename = f"{date_created}_df_best_{BEST_N}"
+full_output_path = f"{data_directory}/{csv_filename}.csv"
+
+df_best.to_csv(full_output_path, index=False)
 print(df_best.head())
