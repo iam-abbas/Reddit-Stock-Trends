@@ -32,7 +32,8 @@ USER_AGENT=<your user agent>
 
 
 ## Contribution
-I would love to see more work done on this, I think this could be something very useful at some point. All contributions are welcome. Go ahead and open a PR
+I would love to see more work done on this, I think this could be something very useful at some point. All contributions are welcome. Go ahead and open a PR.
+- Join the [Discord](https://discord.gg/USsBfc97RM) to discuss development and suggestions.
 
 ### To Do
 - [x] Turn it into python executable rather than notebook
