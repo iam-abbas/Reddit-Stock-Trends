@@ -28,7 +28,7 @@ user_agent=<your user agent>
 ```
 Note that the title of this section, `ClientSecrets`, is important because `ticker_counts.py` will specifically look for that title in the `praw.ini` file.
 - Install required modules using `pip install -r requirements.txt`
-- Run `ticker_count.py` first
+- Run `ticker_counts.py` first
 - Now run `yfinance_analysis.py`
 - You will be able to find your results in `data/` directory.
 
