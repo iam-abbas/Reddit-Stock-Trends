@@ -48,14 +48,7 @@ I would love to see more work done on this, I think this could be something very
 
 
 ### To Do
-- [x] Turn it into python executable rather than notebook
-- [ ] Turn this into a local module that can be used in notebooks/python scripts
-- [ ] Scrape catalysts from DDs
-- [ ] Add visualisations
-- [ ] Add time series to figure out at what time did stock trend and what time did posts/comments on reddit spike
-- [ ] Scrape comments as well
-- [ ] NLP implementation for SA
-- [ ] Create a scoring model that takes into account upvotes/comments/awards and mentions
+See [this](https://github.com/iam-abbas/Reddit-Stock-Trends/labels/feature) page.
 
 Suggestions are appreciated.
 
