@@ -32,6 +32,13 @@ Note that the title of this section, `ClientSecrets`, is important because `tick
 - Now run `yfinance_analysis.py`
 - You will be able to find your results in `data/` directory.
 
+#### Ticker Symbol API - EOD Historical Data
+Included for potential future use is a csv file that contains all the listed ticker symbols for stocks, ETFs, and
+mutual funds (~50,000 tickers). This was retrieved from https://eodhistoricaldata.com/. You can register for a free api key and get up to 20 api calls every 24 hours.
+
+To retrieve a csv of all USA ticker symbols, use the following:
+
+https://eodhistoricaldata.com/api/exchange-symbol-list/US?api_token={YOUR_API_KEY}
 
 ## Contribution 
 I would love to see more work done on this, I think this could be something very useful at some point. All contributions are welcome. Go ahead and open a PR.
