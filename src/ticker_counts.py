@@ -4,29 +4,38 @@ import pandas as pd
 import praw
 import re
 import os
+import yfinance as yf
 
 from collections import Counter
 from functools import reduce
 from operator import add
 from typing import Set
-
 from datetime import datetime
-from urllib.error import HTTPError
-import yfinance as yf
 from tqdm import tqdm
+from dotenv import load_dotenv
+
+
+# Load credtials from env
+load_dotenv()
+CLIENT_ID = os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
+USER_AGENT = os.environ.get('USER_AGENT')
 
 # JB 02/07/2021 - Configparser introduced to scrape out some hardcode and allow removal of sensitive passwords
 
-WEBSCRAPER_LIMIT = 2_000
+WEBSCRAPER_LIMIT = 2000
 
 config = configparser.ConfigParser()
 config.read('./config/config.ini')
 
-CLIENT_ID = config['RedditApi']['ClientId']
-CLIENT_SECRET = config['RedditApi']['ClientSecret']
-USER_AGENT = config['RedditApi']['UserAgent']
+
+
 stop_words = json.loads(config['FilteringOptions']['StopWords'])
 block_words = json.loads(config['FilteringOptions']['BlockWords'])
+
+
+with open('./config/tickers.json') as tickerFile:
+    tickerList = json.load(tickerFile)
 
 
 # Scrape subreddits `r/robinhoodpennystocks` and `r/pennystocks`
@@ -49,6 +58,15 @@ posts = pd.DataFrame(posts, columns=["id",
                                      "comments",
                                      "upvote_ratio",
                                      "total_awards"])
+
+
+def verify_ticker(tic):
+    try:
+        if tickerList[tic]:
+            return True
+    except:
+        pass
+    return False
 
 
 def extract_ticker(body: str, re_string: str = "[$][A-Za-z]*|[A-Z][A-Z]{1,}") -> Set[str]:
@@ -74,12 +92,10 @@ counts = reduce(add, map(Counter, ticker_sets))
 
 verified_tics = {}
 for ticker, ticker_count in tqdm(counts.items(), desc="Filtering verified ticks"):
-    if ticker_count > 3:  # If ticker is found more than 3 times
-        try:
-            _ = yf.Ticker(ticker).info
-            verified_tics[ticker] = ticker_count
-        except:  # Non-existant ticker
-            pass
+    # If ticker is found more than 3 times and ticker is valid
+    if ticker_count > 3 and verify_ticker(ticker):
+        verified_tics[ticker] = ticker_count
+
 
 # Create Datable of just mentions
 tick_df = pd.DataFrame(verified_tics.items(), columns=["Ticker", "Mentions"])
