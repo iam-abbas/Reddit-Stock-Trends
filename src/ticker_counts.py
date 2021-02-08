@@ -4,6 +4,7 @@ from functools import reduce
 from operator import add
 from typing import Set
 
+import os
 import pandas as pd
 import praw
 import yfinance as yf
@@ -34,6 +35,16 @@ stop_words = set(["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "
 block_words = set(["DIP", "", "$", "RH", "YOLO", "PORN", "BEST", "MOON", "HOLD", "FAKE", "WISH", "USD", "EV", "MARK", "RELAX", "LOL", "LMAO",
                "LMFAO", "EPS", "DCF", "NYSE", "FTSE", "APE", "CEO", "CTO", "FUD", "DD", "AM", "PM", "FDD", "EDIT", "TA", "UK", "AMC", "GME"])
 
+
+# Create output directory
+outputDirectory = 'data'
+try:
+    if os.path.isdir(outputDirectory):
+        pass
+    else:
+        os.makedirs(outputDirectory)
+except IOError as exception:
+    raise IOError('%s: %s' % (outputDirectory, exception.strerror))
 
 # Scrape subreddits `r/robinhoodpennystocks` and `r/pennystocks`
 # Current it does fetch a lot of additional data like upvotes, comments, awards etc but not using anything apart from title for now
@@ -91,6 +102,6 @@ tick_df = pd.DataFrame(verified_tics.items(), columns=["Ticker", "Mentions"])
 tick_df.sort_values(by=["Mentions"], inplace=True, ascending=False)
 tick_df.reset_index(inplace=True, drop=True)
 
-with open('./data/tick_df.csv', 'w+') as file:  # Use file to refer to the file object
-    tick_df.to_csv("./data/tick_df.csv", index=False) # Save to file to load into yahoo analysis script
+with open(outputDirectory + '/tick_df.csv', 'w+') as file:  # Use file to refer to the file object
+    tick_df.to_csv(outputDirectory + "/tick_df.csv", index=False) # Save to file to load into yahoo analysis script
     print(tick_df.head())
