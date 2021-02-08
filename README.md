@@ -19,13 +19,15 @@ See trending stock tickers on Reddit and check Stock perfomance <br><br>
 
 #### Running Scripts
 - Go to `src/` directory.
-- Create a `.env` file and add the following
+- Create a `praw.ini` file with the following
 ```
-CLIENT_ID=<your client id>
-CLIENT_SECRET=<your client secret>
-USER_AGENT=<your user agent>
+[ClientSecrets]
+client_id=<your client id>
+client_secret=<your client secret>
+user_agent=<your user agent>
 ```
-- install required modules using `pip install -r requirements.txt`
+Note that the title of this section, `ClientSecrets`, is important because `ticker_counts.py` will specifically look for that title in the `praw.ini` file.
+- Install required modules using `pip install -r requirements.txt`
 - Run `ticker_count.py` first
 - Now run `yfinance_analysis.py`
 - You will be able to find your results in `data/` directory.
@@ -42,13 +44,13 @@ I would love to see more work done on this, I think this could be something very
 - [x] Turn it into python executable rather than notebook
 - [ ] Turn this into a local module that can be used in notebooks/python scripts
 - [ ] Scrape catalysts from DDs
-- [ ] Add visualisations 
+- [ ] Add visualisations
 - [ ] Add time series to figure out at what time did stock trend and what time did posts/comments on reddit spike
 - [ ] Scrape comments as well
 - [ ] NLP implementation for SA
 - [ ] Create a scoring model that takes into account upvotes/comments/awards and mentions
 
-Suggestions are appreciated. 
+Suggestions are appreciated.
 
 ### Donation
 If you like what I am doing, consider buying me a coffee this helps me give more time to this project and improve. <br><br>
@@ -57,6 +59,3 @@ If you like what I am doing, consider buying me a coffee this helps me give more
 ----
 
 If you decide to use this anywhere please give a credit to [@abbasmdj](https://twitter.com/abbasmdj) on twitter, also If you like my work, check out other projects on my [Github](https://github.com/iam-abbas) and my [personal blog](https://abbasmj.com).
-
-
-
