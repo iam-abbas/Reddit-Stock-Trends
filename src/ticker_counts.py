@@ -3,10 +3,15 @@ import json
 import pandas as pd
 import praw
 import re
+import os
+
 from collections import Counter
 from functools import reduce
 from operator import add
 from typing import Set
+
+from datetime import datetime
+from urllib.error import HTTPError
 import yfinance as yf
 from tqdm import tqdm
 
@@ -73,7 +78,8 @@ for ticker, ticker_count in tqdm(counts.items(), desc="Filtering verified ticks"
         try:
             _ = yf.Ticker(ticker).info
             verified_tics[ticker] = ticker_count
-        except KeyError:  # Non-existant ticker
+        except (KeyError, HTTPError, ImportError) as e:  # Non-existant ticker
+            print(e)
             pass
 
 # Create Datable of just mentions
@@ -81,6 +87,15 @@ tick_df = pd.DataFrame(verified_tics.items(), columns=["Ticker", "Mentions"])
 tick_df.sort_values(by=["Mentions"], inplace=True, ascending=False)
 tick_df.reset_index(inplace=True, drop=True)
 
-with open('./data/tick_df.csv', 'w+') as file:  # Use file to refer to the file object
-    tick_df.to_csv("./data/tick_df.csv", index=False) # Save to file to load into yahoo analysis script
+date_created = datetime.today().strftime('%Y-%m-%d')
+csv_filename = f"{date_created}_tick_df"
+directory_output = "./data"
+
+if not os.path.exists(directory_output):
+    os.mkdir(directory_output)
+
+full_output_path =f"{directory_output}/{csv_filename}.csv"
+
+with open(full_output_path, "w+") as file:  # Use file to refer to the file object
+    tick_df.to_csv(full_output_path, index=False) # Save to file to load into yahoo analysis script
     print(tick_df.head())
