@@ -12,14 +12,7 @@ from operator import add
 from typing import Set
 from datetime import datetime
 from tqdm import tqdm
-from dotenv import load_dotenv
 
-
-# Load credtials from env
-load_dotenv()
-CLIENT_ID = os.environ.get('CLIENT_ID')
-CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
-USER_AGENT = os.environ.get('USER_AGENT')
 
 # JB 02/07/2021 - Configparser introduced to scrape out some hardcode and allow removal of sensitive passwords
 
@@ -40,9 +33,7 @@ with open('./config/tickers.json') as tickerFile:
 
 # Scrape subreddits `r/robinhoodpennystocks` and `r/pennystocks`
 # Current it does fetch a lot of additional data like upvotes, comments, awards etc but not using anything apart from title for now
-reddit = praw.Reddit(client_id=CLIENT_ID,
-                     client_secret=CLIENT_SECRET,
-                     user_agent=USER_AGENT)
+reddit = praw.Reddit('ClientSecrets')
 subreddits = "+".join(json.loads(config['FilteringOptions']['Subreddits']))
 new_bets = reddit.subreddit(subreddits).new(limit=WEBSCRAPER_LIMIT)
 

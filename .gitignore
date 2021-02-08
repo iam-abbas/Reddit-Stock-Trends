@@ -3,3 +3,5 @@ data/
 
 *.env
 */env/*
+
+praw.ini
