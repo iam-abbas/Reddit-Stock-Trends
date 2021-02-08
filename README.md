@@ -31,9 +31,12 @@ USER_AGENT=<your user agent>
 - You will be able to find your results in `data/` directory.
 
 
-## Contribution
+## Contribution 
 I would love to see more work done on this, I think this could be something very useful at some point. All contributions are welcome. Go ahead and open a PR.
 - Join the [Discord](https://discord.gg/USsBfc97RM) to discuss development and suggestions.
+
+<a href="https://discord.gg/USsBfc97RM" ><img src="https://preview.redd.it/tpvewx1950311.png?width=1487&format=png&auto=webp&s=be429e3b5e7e51c777497c95b63c5011f9a906b6" width="150px"></a>
+
 
 ### To Do
 - [x] Turn it into python executable rather than notebook
