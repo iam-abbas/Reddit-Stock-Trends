@@ -26,7 +26,7 @@ CLIENT_ID = config['RedditApi']['ClientId']
 CLIENT_SECRET = config['RedditApi']['ClientSecret']
 USER_AGENT = config['RedditApi']['UserAgent']
 stop_words = json.loads(config['FilteringOptions']['StopWords'])
-block_words = json.loads(config['FilteringOptions']['StopWords'])
+block_words = json.loads(config['FilteringOptions']['BlockWords'])
 
 
 # Scrape subreddits `r/robinhoodpennystocks` and `r/pennystocks`
