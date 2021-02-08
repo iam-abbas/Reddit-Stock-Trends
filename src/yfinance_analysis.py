@@ -16,7 +16,7 @@ def get_change(ticker: str, period: str = "1d") -> float:
 
 # Load data from file, generate data by running the `ticker_counts.py` script
 tick_df = pd.read_csv(
-    "./data/tick_df.csv").sort_values(by=["Mentions", "Ticker"], ascending=False)
+    "data/tick_df.csv").sort_values(by=["Mentions", "Ticker"], ascending=False)
 tick_df.dropna(axis=1)
 
 dataColumns = ["Name", "Industry", "Previous Close", "5d Low", "5d High", "1d Change (%)", "5d Change (%)", "1mo Change (%)"]
