@@ -18,3 +18,4 @@ update-checker==0.18.0
 urllib3==1.26.3
 websocket-client==0.57.0
 yfinance==0.1.55
+flask==1.1.2

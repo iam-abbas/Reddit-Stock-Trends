@@ -56,7 +56,7 @@ df_best[dataColumns] = df_best.Ticker.apply(getTickerInfo)
 
 
 # Save to file to load into yahoo analysis script
-csv_filename = f"{date_created}_df_best_{BEST_N}"
+csv_filename = f"df_best_{BEST_N}"
 full_output_path = f"{data_directory}/{csv_filename}.csv"
 
 df_best.to_csv(full_output_path, index=False)
