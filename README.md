@@ -32,6 +32,24 @@ Note that the title of this section, `ClientSecrets`, is important because `tick
 - Now run `yfinance_analysis.py`
 - You will be able to find your results in `data/` directory.
 
+---
+## Web app
+There's also a JavaScript web app that shows some data visualizations if you don't want to read the csv files.
+
+### Usage
+Once you finished running the scripts, you'll have to set up the local server
+```bash
+cd back
+python wsgi.py
+```
+
+Then, launch the client
+```bash
+cd front
+npm install
+npm run serve
+```
+---
 #### Ticker Symbol API - EOD Historical Data
 Included for potential future use is a csv file that contains all the listed ticker symbols for stocks, ETFs, and
 mutual funds (~50,000 tickers). This was retrieved from https://eodhistoricaldata.com/. You can register for a free api key and get up to 20 api calls every 24 hours.

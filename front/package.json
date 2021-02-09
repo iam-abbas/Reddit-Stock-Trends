@@ -9,10 +9,14 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.21.1",
+    "bootstrap": "^5.0.0-beta1",
     "core-js": "^3.6.5",
+    "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
     "primevue": "^3.2.1",
     "vue": "^3.0.0",
+    "vue-axios": "^3.2.4",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.0-0",
     "vuesax": "^4.0.1-alpha.25"
@@ -53,7 +57,10 @@
     "parserOptions": {
       "ecmaVersion": 2020
     },
-    "rules": {},
+    "rules": {
+      "import/prefer-default-export": "off",
+      "class-methods-use-this": "off"
+    },
     "overrides": [
       {
         "files": [
