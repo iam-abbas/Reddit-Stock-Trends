@@ -46,9 +46,12 @@ python wsgi.py
 Then, launch the client
 ```bash
 cd front
+cp .env.example .env
 npm install
 npm run serve
 ```
+You can change the env variables if you need to
+
 ---
 #### Ticker Symbol API - EOD Historical Data
 Included for potential future use is a csv file that contains all the listed ticker symbols for stocks, ETFs, and
