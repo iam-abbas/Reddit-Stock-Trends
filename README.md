@@ -18,7 +18,7 @@ See trending stock tickers on Reddit and check Stock perfomance <br><br>
 - Follow [this](https://towardsdatascience.com/scraping-reddit-with-praw-76efc1d1e1d9) article to get your credentials.
 
 #### Running Scripts
-- Go to `src/` directory.
+- Go to `back/` directory.
 - Create a `praw.ini` file with the following
 ```
 [ClientSecrets]
