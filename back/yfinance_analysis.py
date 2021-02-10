@@ -32,8 +32,8 @@ def getTickerInfo(ticker):
     
   # Standard Data
   info = yf.Ticker(ticker).info
-  tickerName = info["longName"]
-  tickerIndustry = info["industry"]
+  tickerName = info.get("longName")
+  tickerIndustry = info.get("industry")
 
   # previous Day close
   tickerClose = yf.Ticker(ticker).history(period="1d")["Close"].to_list()[-1]
