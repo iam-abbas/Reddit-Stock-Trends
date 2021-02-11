@@ -85,12 +85,10 @@ class TickerCounts:
         df_tick.sort_values(by=['Mentions'], inplace=True, ascending=False)
         df_tick.reset_index(inplace=True, drop=True)
 
-        date_created = dt.date.today()
-        filename = f'{date_created}_tick_df'
         data_directory = Path('./data')
         data_directory.mkdir(parents=True, exist_ok=True)
 
-        output_path = f'{data_directory}/{filename}.csv'
+        output_path = data_directory / f'{dt.date.today()}_tick_df.csv'
         df_tick.to_csv(output_path, index=False)
         print(df_tick.head())
 

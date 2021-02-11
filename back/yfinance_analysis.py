@@ -10,11 +10,8 @@ class FinanceAnalysis:
 
     def analyze(self, best_n=25):
         # Load data from file, generate data by running the `ticker_counts.py` script
-        date_created = dt.date.today()
-        filename = f'{date_created}_tick_df'
         data_directory = Path('./data')
-
-        input_path = f'{data_directory}/{filename}.csv'
+        input_path = data_directory / f'{dt.date.today()}_tick_df.csv'
 
         df_tick = pd.read_csv(input_path).sort_values(by=['Mentions', 'Ticker'], ascending=False)
         df_tick.dropna(axis=1)
@@ -25,9 +22,7 @@ class FinanceAnalysis:
         df_best[columns] = df_best['Ticker'].apply(self.get_ticker_info)
 
         # Save to file to load into yahoo analysis script
-        filename = f'df_best_{best_n}'
-        output_path = f'{data_directory}/{filename}.csv'
-
+        output_path = data_directory / f'df_best_{best_n}.csv'
         df_best.to_csv(output_path, index=False)
         print(df_best.head())
 
