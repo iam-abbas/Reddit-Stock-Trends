@@ -30,6 +30,8 @@ Note that the title of this section, `ClientSecrets`, is important because `tick
 - Install required modules using `pip install -r requirements.txt`
 - Run `ticker_counts.py` first
 - Now run `yfinance_analysis.py`
+- currently the default number of tickers analyzed is 25 but yfiinance does accept a number as an arguement if you want more or less tickers
+-- eg/ "python yfinance_analysis.py 20" would get you only 20 tickers analyzed
 - You will be able to find your results in `data/` directory.
 
 ---
