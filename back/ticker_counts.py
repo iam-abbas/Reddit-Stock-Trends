@@ -1,47 +1,44 @@
 import configparser
 import json
-import pandas as pd
-import praw
-import re
 import os
-
+import re
 from collections import Counter
+from datetime import datetime
 from functools import reduce
 from operator import add
 from typing import Set
-from datetime import datetime
+
+import pandas as pd
+import praw
 from tqdm import tqdm
 
 
-# JB 02/07/2021 - Configparser introduced to scrape out some hardcode and allow removal of sensitive passwords
-
 class TickerCounts:
-
     WEBSCRAPER_LIMIT = 2000
     config = configparser.ConfigParser()
     config.read('./config/config.ini')
     stop_words = json.loads(config['FilteringOptions']['StopWords'])
     block_words = json.loads(config['FilteringOptions']['BlockWords'])
 
-    def verify_ticker(self, tic):
-        with open('./config/tickers.json') as tickerFile:
-            tickerList = json.load(tickerFile)
+    def verify_ticker(self, tick):
+        with open('./config/tickers.json') as f:
+            tickers = json.load(f)
         try:
-            if tickerList[tic]:
+            if tickers[tick]:
                 return True
-        except:
+        except Exception as e:
             pass
         return False
 
-    def extract_ticker(self, body: str, re_string: str = "[$][A-Za-z]*|[A-Z][A-Z]{1,}") -> Set[str]:
+    def extract_ticker(self, body: str, re_string: str = r'[$][A-Za-z]*|[A-Z][A-Z]{1,}') -> Set[str]:
         """Simple Regex to get tickers from text."""
         ticks = set(re.findall(re_string, str(body)))
         res = set()
         for item in ticks:
             if item not in self.block_words and item.lower() not in self.stop_words and item:
                 try:
-                    tic = item.replace("$", "").upper()
-                    res.add(tic)
+                    tick = item.replace('$', '').upper()
+                    res.add(tick)
                 except Exception as e:
                     print(e)
         return res
@@ -50,7 +47,7 @@ class TickerCounts:
         # Scrape subreddits `r/robinhoodpennystocks` and `r/pennystocks`
         # Current it does fetch a lot of additional data like upvotes, comments, awards etc but not using anything apart from title for now
         reddit = praw.Reddit('ClientSecrets')
-        subreddits = "+".join(json.loads(self.config['FilteringOptions']['Subreddits']))
+        subreddits = '+'.join(json.loads(self.config['FilteringOptions']['Subreddits']))
         new_bets = reddit.subreddit(subreddits).new(limit=self.WEBSCRAPER_LIMIT)
 
         posts = [
@@ -61,43 +58,43 @@ class TickerCounts:
                 post.num_comments,
                 post.upvote_ratio,
                 post.total_awards_received
-            ] for post in tqdm(new_bets, desc="Selecting relevant data from webscraper", total=self.WEBSCRAPER_LIMIT)
+            ] for post in tqdm(new_bets, desc='Selecting relevant data from webscraper', total=self.WEBSCRAPER_LIMIT)
         ]
-        posts = pd.DataFrame(posts, columns=["id",
-                                             "title",
-                                             "score",
-                                             "comments",
-                                             "upvote_ratio",
-                                             "total_awards"])
+        df_posts = pd.DataFrame(posts, columns=['id',
+                                                'title',
+                                                'score',
+                                                'comments',
+                                                'upvote_ratio',
+                                                'total_awards'])
 
         # Extract tickers from all titles and create a new column
-        posts["Tickers"] = posts["title"].apply(self.extract_ticker)
-        ticker_sets = posts.Tickers.to_list()
+        df_posts['Tickers'] = df_posts['title'].apply(self.extract_ticker)
+        tickers = df_posts['Tickers'].to_list()
 
         # Count number of occurrences of the Ticker and verify id the Ticker exists
-        counts = reduce(add, map(Counter, ticker_sets))
+        counts = reduce(add, map(Counter, tickers))
 
-        verified_tics = {}
-        for ticker, ticker_count in tqdm(counts.items(), desc="Filtering verified ticks"):
+        verified_ticks = {}
+        for ticker, ticker_count in tqdm(counts.items(), desc='Filtering verified ticks'):
             # If ticker is found more than 3 times and ticker is valid
             if ticker_count > 3 and self.verify_ticker(ticker):
-                verified_tics[ticker] = ticker_count
+                verified_ticks[ticker] = ticker_count
 
         # Create Datable of just mentions
-        tick_df = pd.DataFrame(verified_tics.items(), columns=["Ticker", "Mentions"])
-        tick_df.sort_values(by=["Mentions"], inplace=True, ascending=False)
-        tick_df.reset_index(inplace=True, drop=True)
+        df_tick = pd.DataFrame(verified_ticks.items(), columns=['Ticker', 'Mentions'])
+        df_tick.sort_values(by=['Mentions'], inplace=True, ascending=False)
+        df_tick.reset_index(inplace=True, drop=True)
 
         date_created = datetime.today().strftime('%Y-%m-%d')
-        csv_filename = f"{date_created}_tick_df"
-        directory_output = "./data"
+        filename = f'{date_created}_tick_df'
+        data_directory = './data'
 
-        if not os.path.exists(directory_output):
-            os.mkdir(directory_output)
+        if not os.path.exists(data_directory):
+            os.mkdir(data_directory)
 
-        full_output_path = f"{directory_output}/{csv_filename}.csv"
-        tick_df.to_csv(full_output_path, index=False)
-        print(tick_df.head())
+        output_path = f'{data_directory}/{filename}.csv'
+        df_tick.to_csv(output_path, index=False)
+        print(df_tick.head())
 
 
 if __name__ == '__main__':
