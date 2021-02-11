@@ -1,5 +1,5 @@
+import datetime as dt
 import sys
-from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -10,7 +10,7 @@ class FinanceAnalysis:
 
     def analyze(self, best_n=25):
         # Load data from file, generate data by running the `ticker_counts.py` script
-        date_created = datetime.today().strftime('%Y-%m-%d')
+        date_created = dt.date.today()
         filename = f'{date_created}_tick_df'
         data_directory = Path('./data')
 
