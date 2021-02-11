@@ -32,7 +32,7 @@ class TickerCounts:
             pass
         return False
 
-    def extract_ticker(self, body: str, re_string: str = r'[$][A-Za-z]*|[A-Z][A-Z]{1,}') -> Set[str]:
+    def extract_ticker(self, body: str, re_string: str = r'\$[A-Za-z]+|[A-Z]{2,}') -> Set[str]:
         """Simple Regex to get tickers from text."""
         ticks = set(re.findall(re_string, str(body)))
         res = set()
