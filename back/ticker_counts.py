@@ -2,9 +2,14 @@ import configparser
 import datetime as dt
 import json
 import re
+import os
+
 from collections import Counter, namedtuple
 from itertools import chain
 from pathlib import Path
+from collections import Counter
+from functools import reduce
+from operator import add
 from typing import Set
 
 import pandas as pd
@@ -64,6 +69,7 @@ class TickerCounts:
 
         data_directory = Path('./data')
         data_directory.mkdir(parents=True, exist_ok=True)
+        
 
         output_path = data_directory / f'{dt.date.today()}_tick_df.csv'
         df_tick.to_csv(output_path, index=False)
