@@ -26,12 +26,7 @@ class TickerCounts:
         tickers = json.load(f)
 
     def verify_ticker(self, tick):
-        try:
-            if self.tickers[tick]:
-                return True
-        except Exception as e:
-            pass
-        return False
+        return tick in self.tickers
 
     def extract_ticker(self, body: str, re_string: str = r'\$[A-Za-z]+|[A-Z]{2,}') -> Set[str]:
         """Simple Regex to get tickers from text."""
