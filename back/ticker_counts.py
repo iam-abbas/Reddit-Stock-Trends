@@ -77,7 +77,6 @@ class TickerCounts:
         # Create Datable of just mentions
         df_tick = pd.DataFrame(verified_ticks.items(), columns=['Ticker', 'Mentions'])
         df_tick.sort_values(by=['Mentions'], inplace=True, ascending=False)
-        df_tick.reset_index(inplace=True, drop=True)
 
         data_directory = Path('./data')
         data_directory.mkdir(parents=True, exist_ok=True)
