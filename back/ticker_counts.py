@@ -21,6 +21,7 @@ class TickerCounts:
     config.read('./config/config.ini')
     stop_words = json.loads(config['FilteringOptions']['StopWords'])
     block_words = json.loads(config['FilteringOptions']['BlockWords'])
+    subreddits = json.loads(config['FilteringOptions']['Subreddits'])
 
     def verify_ticker(self, tick):
         with open('./config/tickers.json') as f:
@@ -49,7 +50,7 @@ class TickerCounts:
         # Scrape subreddits `r/robinhoodpennystocks` and `r/pennystocks`
         # Current it does fetch a lot of additional data like upvotes, comments, awards etc but not using anything apart from title for now
         reddit = praw.Reddit('ClientSecrets')
-        subreddits = '+'.join(json.loads(self.config['FilteringOptions']['Subreddits']))
+        subreddits = '+'.join(self.subreddits)
         new_bets = reddit.subreddit(subreddits).new(limit=self.WEBSCRAPER_LIMIT)
 
         for post in tqdm(new_bets, desc='Selecting relevant data from webscraper', total=self.WEBSCRAPER_LIMIT):
