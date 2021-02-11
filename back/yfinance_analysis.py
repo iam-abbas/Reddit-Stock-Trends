@@ -30,9 +30,10 @@ class FinanceAnalysis:
         return round(((end - start) / start) * 100, 2)
 
     def get_change(self, ticker: str, period: str = '1d') -> float:
+        data = yf.Ticker(ticker).history(period)
         return self.calculate_change(
-            yf.Ticker(ticker).history(period)['Open'].to_list()[0],
-            yf.Ticker(ticker).history(period)['Close'].to_list()[-1]
+            data['Open'].to_list()[0],
+            data['Close'].to_list()[-1]
         )
 
     def get_ticker_info(self, ticker):
