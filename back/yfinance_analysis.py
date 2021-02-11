@@ -1,8 +1,8 @@
-import yfinance as yf
-import pandas as pd
 import sys
-
 from datetime import datetime
+
+import pandas as pd
+import yfinance as yf
 
 
 class FinanceAnalysis:
@@ -41,7 +41,6 @@ class FinanceAnalysis:
         )
 
     def get_ticker_info(self, ticker):
-
         # Standard Data
         info = yf.Ticker(ticker).info
         tickerName = info.get("longName")

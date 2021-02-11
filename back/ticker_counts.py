@@ -1,22 +1,19 @@
 import configparser
 import json
-import pandas as pd
-import praw
-import re
 import os
-
+import re
 from collections import Counter
+from datetime import datetime
 from functools import reduce
 from operator import add
 from typing import Set
-from datetime import datetime
+
+import pandas as pd
+import praw
 from tqdm import tqdm
 
 
-# JB 02/07/2021 - Configparser introduced to scrape out some hardcode and allow removal of sensitive passwords
-
 class TickerCounts:
-
     WEBSCRAPER_LIMIT = 2000
     config = configparser.ConfigParser()
     config.read('./config/config.ini')

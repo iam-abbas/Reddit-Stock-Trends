@@ -6,9 +6,10 @@ import csv
 app = Flask(__name__)
 cors = CORS(app)
 
+
 @app.route('/get-basic-data', methods=['GET'])
 def get_basic_data() -> str:
-	with open('./data/df_best_25.csv', 'r') as csvfile:
-		reader = list(csv.reader(csvfile))
+    with open('./data/df_best_25.csv', 'r') as csvfile:
+        reader = list(csv.reader(csvfile))
 
-	return jsonify(reader)
+    return jsonify(reader)
