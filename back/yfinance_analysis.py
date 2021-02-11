@@ -1,5 +1,6 @@
 import sys
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 import yfinance as yf
@@ -11,7 +12,7 @@ class FinanceAnalysis:
         # Load data from file, generate data by running the `ticker_counts.py` script
         date_created = datetime.today().strftime('%Y-%m-%d')
         filename = f'{date_created}_tick_df'
-        data_directory = './data'
+        data_directory = Path('./data')
 
         input_path = f'{data_directory}/{filename}.csv'
 

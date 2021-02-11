@@ -1,11 +1,11 @@
 import configparser
 import json
-import os
 import re
 from collections import Counter
 from datetime import datetime
 from functools import reduce
 from operator import add
+from pathlib import Path
 from typing import Set
 
 import pandas as pd
@@ -87,10 +87,8 @@ class TickerCounts:
 
         date_created = datetime.today().strftime('%Y-%m-%d')
         filename = f'{date_created}_tick_df'
-        data_directory = './data'
-
-        if not os.path.exists(data_directory):
-            os.mkdir(data_directory)
+        data_directory = Path('./data')
+        data_directory.mkdir(parents=True, exist_ok=True)
 
         output_path = f'{data_directory}/{filename}.csv'
         df_tick.to_csv(output_path, index=False)
