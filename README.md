@@ -30,8 +30,8 @@ Note that the title of this section, `ClientSecrets`, is important because `tick
 - Install required modules using `pip install -r requirements.txt`
 - Run `ticker_counts.py` first
 - Now run `yfinance_analysis.py`
-- currently the default number of tickers analyzed is 25 but yfiinance does accept a number as an arguement if you want more or less tickers
--- eg/ "python yfinance_analysis.py 20" would get you only 20 tickers analyzed
+- Currently the default number of tickers analyzed is 25 but `yfinance` does accept a number as an argument if you want more or less tickers
+-- eg/ `python yfinance_analysis.py 20` return 20 tickers analyzed.
 - You will be able to find your results in `data/` directory.
 
 ---
@@ -63,7 +63,7 @@ To retrieve a csv of all USA ticker symbols, use the following:
 
 https://eodhistoricaldata.com/api/exchange-symbol-list/US?api_token={YOUR_API_KEY}
 
-## Contribution 
+## Contribution
 I would love to see more work done on this, I think this could be something very useful at some point. All contributions are welcome. Go ahead and open a PR.
 - Join the [Discord](https://discord.gg/USsBfc97RM) to discuss development and suggestions.
 
