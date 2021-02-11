@@ -14,7 +14,6 @@ class FinanceAnalysis:
         input_path = data_directory / f'{dt.date.today()}_tick_df.csv'
 
         df_tick = pd.read_csv(input_path).sort_values(by=['Mentions', 'Ticker'], ascending=False)
-        df_tick.dropna(axis=1)
 
         columns = ['Name', 'Industry', 'Previous Close', '5d Low', '5d High', '1d Change (%)', '5d Change (%)',
                    '1mo Change (%)']
