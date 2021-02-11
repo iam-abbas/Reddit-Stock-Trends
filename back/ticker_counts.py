@@ -22,12 +22,12 @@ class TickerCounts:
     stop_words = json.loads(config['FilteringOptions']['StopWords'])
     block_words = json.loads(config['FilteringOptions']['BlockWords'])
     subreddits = json.loads(config['FilteringOptions']['Subreddits'])
+    with open('./config/tickers.json') as f:
+        tickers = json.load(f)
 
     def verify_ticker(self, tick):
-        with open('./config/tickers.json') as f:
-            tickers = json.load(f)
         try:
-            if tickers[tick]:
+            if self.tickers[tick]:
                 return True
         except Exception as e:
             pass
