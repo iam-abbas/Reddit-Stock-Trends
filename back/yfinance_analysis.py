@@ -64,10 +64,12 @@ class FinanceAnalysis:
 
         return pd.Series([ticker_name, ticker_industry, ticker_close, low5d, high5d, change1d, change5d, change1mo])
 
-
-if __name__ == '__main__':
+def main():
     analyzer = FinanceAnalysis()
     if len(sys.argv) > 1:
         analyzer.analyze(int(sys.argv[1]))
     else:
         analyzer.analyze()
+
+if __name__ == '__main__':
+    main()

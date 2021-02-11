@@ -69,7 +69,9 @@ class TickerCounts:
         df_tick.to_csv(output_path, index=False)
         print(df_tick.head())
 
-
-if __name__ == '__main__':
+def main():
     ticket = TickerCounts()
     ticket.get_data()
+
+if __name__ == '__main__':
+    main()
