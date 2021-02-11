@@ -2,7 +2,7 @@ import configparser
 import datetime as dt
 import json
 import re
-from collections import Counter
+from collections import Counter, namedtuple
 from functools import reduce
 from operator import add
 from pathlib import Path
@@ -11,6 +11,8 @@ from typing import Set
 import pandas as pd
 import praw
 from tqdm import tqdm
+
+Post = namedtuple('Post', 'id,title,score,comments,upvote_ratio,total_awards')
 
 
 class TickerCounts:
@@ -43,29 +45,25 @@ class TickerCounts:
                     print(e)
         return res
 
-    def get_data(self):
+    def _get_posts(self):
         # Scrape subreddits `r/robinhoodpennystocks` and `r/pennystocks`
         # Current it does fetch a lot of additional data like upvotes, comments, awards etc but not using anything apart from title for now
         reddit = praw.Reddit('ClientSecrets')
         subreddits = '+'.join(json.loads(self.config['FilteringOptions']['Subreddits']))
         new_bets = reddit.subreddit(subreddits).new(limit=self.WEBSCRAPER_LIMIT)
 
-        posts = [
-            [
+        for post in tqdm(new_bets, desc='Selecting relevant data from webscraper', total=self.WEBSCRAPER_LIMIT):
+            yield Post(
                 post.id,
                 post.title,
                 post.score,
                 post.num_comments,
                 post.upvote_ratio,
-                post.total_awards_received
-            ] for post in tqdm(new_bets, desc='Selecting relevant data from webscraper', total=self.WEBSCRAPER_LIMIT)
-        ]
-        df_posts = pd.DataFrame(posts, columns=['id',
-                                                'title',
-                                                'score',
-                                                'comments',
-                                                'upvote_ratio',
-                                                'total_awards'])
+                post.total_awards_received,
+            )
+
+    def get_data(self):
+        df_posts = pd.DataFrame(self._get_posts())
 
         # Extract tickers from all titles and create a new column
         df_posts['Tickers'] = df_posts['title'].apply(self.extract_ticker)
