@@ -12,3 +12,14 @@ services:
       - '5000:5000'
     volumes:
       - './back:/code'
+
+  frontend:
+    image: reddit-stock-frontend
+    build:
+      context: ./front/
+      dockerfile: Dockerfile
+      network: host
+    ports:
+      - '8080:8080'
+    volumes:
+      - './front:/code'
