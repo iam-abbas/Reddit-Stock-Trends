@@ -37,11 +37,11 @@ class FinanceAnalysis:
 
     def get_ticker_info(self, ticker):
         # Standard Data
-        info = yf.Ticker(ticker).info
-        ticker_name = info.get('longName')
-        ticker_industry = info.get('industry')
+        ticker = yf.Ticker(ticker)
+        ticker_name = ticker.info.get('longName')
+        ticker_industry = ticker.info.get('industry')
 
-        df_hist_1mo = yf.Ticker(ticker).history(period='1mo')
+        df_hist_1mo = ticker.history(period='1mo')
         df_hist_5d = df_hist_1mo.iloc[-5:]
         df_hist_1d = df_hist_1mo.iloc[-1:]
 
