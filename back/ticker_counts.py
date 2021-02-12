@@ -28,14 +28,14 @@ class TickerCounts:
     def verify_ticker(self, tick):
         return tick in self.tickers
 
-    def extract_ticker(self, body: str, re_string: str = r'\$[A-Za-z]+|[A-Z]{2,}') -> Set[str]:
+    def extract_ticker(self, text: str, pattern: str = r'\$[A-Za-z]+|[A-Z]{2,}') -> Set[str]:
         """Simple Regex to get tickers from text."""
-        ticks = set(re.findall(re_string, str(body)))
+        ticks = set(re.findall(pattern, str(text)))
         res = set()
-        for item in ticks:
-            if item not in self.block_words and item.lower() not in self.stop_words and item:
+        for tick in ticks:
+            if tick not in self.block_words and tick.lower() not in self.stop_words and tick:
                 try:
-                    tick = item.replace('$', '').upper()
+                    tick = tick.replace('$', '').upper()
                     res.add(tick)
                 except Exception as e:
                     print(e)
