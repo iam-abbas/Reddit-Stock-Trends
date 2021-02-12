@@ -1,3 +1,4 @@
+import concurrent.futures
 import datetime as dt
 import sys
 from pathlib import Path
@@ -22,7 +23,11 @@ class FinanceAnalysis:
                    '1mo Change (%)']
         df_best = df_tick.head(best_n)
 
-        self.data = yf.download(df_best['Ticker'].tolist(), period='1mo', group_by='ticker', progress=False)
+        # Activate all tickers' info in parallel
+        self.tickers = yf.Tickers(df_best['Ticker'].tolist())
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.map(lambda t: t.info, self.tickers.tickers)
+        self.data = self.tickers.download(period='1mo', group_by='ticker', progress=False)
 
         df_best[columns] = df_best['Ticker'].progress_apply(self.get_ticker_info)
 
@@ -40,7 +45,7 @@ class FinanceAnalysis:
 
     def get_ticker_info(self, ticker):
         # Standard Data
-        ticker = yf.Ticker(ticker)
+        ticker = getattr(self.tickers.tickers, ticker)
         ticker_name = ticker.info.get('longName')
         ticker_industry = ticker.info.get('industry')
 
