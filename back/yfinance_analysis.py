@@ -2,8 +2,6 @@ import concurrent.futures
 import datetime as dt
 import sys
 from pathlib import Path
-from datetime import datetime
-from tqdm import tqdm
 
 import pandas as pd
 import yfinance as yf
@@ -18,7 +16,6 @@ class FinanceAnalysis:
 
         df_tick = pd.read_csv(input_path).sort_values(by=['Mentions', 'Ticker'], ascending=False)
 
-        tqdm.pandas(desc = 'Requesting stock data')
         columns = ['Name', 'Industry', 'Previous Close', '5d Low', '5d High', '1d Change (%)', '5d Change (%)',
                    '1mo Change (%)']
         df_best = df_tick.head(best_n)
@@ -27,9 +24,9 @@ class FinanceAnalysis:
         self.tickers = yf.Tickers(df_best['Ticker'].tolist())
         with concurrent.futures.ThreadPoolExecutor() as executor:
             executor.map(lambda t: t.info, self.tickers.tickers)
-        self.data = self.tickers.download(period='1mo', group_by='ticker', progress=False)
+        self.data = self.tickers.download(period='1mo', group_by='ticker', progress=True)
 
-        df_best[columns] = df_best['Ticker'].progress_apply(self.get_ticker_info)
+        df_best[columns] = df_best['Ticker'].apply(self.get_ticker_info)
 
         # Save to file to load into yahoo analysis script
         output_path = data_directory / f'df_best_{best_n}.csv'
