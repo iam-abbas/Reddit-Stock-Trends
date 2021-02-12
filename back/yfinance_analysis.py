@@ -33,10 +33,7 @@ class FinanceAnalysis:
         return round(((end - start) / start) * 100, 2)
 
     def get_change(self, data) -> float:
-        return self.calculate_change(
-            data['Open'].to_list()[0],
-            data['Close'].to_list()[-1]
-        )
+        return self.calculate_change(data['Open'][0], data['Close'][-1])
 
     def get_ticker_info(self, ticker):
         # Standard Data
@@ -46,12 +43,12 @@ class FinanceAnalysis:
 
         df_hist_1mo = yf.Ticker(ticker).history(period='1mo')
         # previous Day close
-        ticker_close = df_hist_1mo['Close'].to_list()[-1]
+        ticker_close = df_hist_1mo['Close'][-1]
 
         # Highs and Lows
         high_low = df_hist_1mo.iloc[-5:]
-        low5d = min(high_low['Low'].to_list())
-        high5d = max(high_low['High'].to_list())
+        low5d = high_low['Low'].min()
+        high5d = high_low['High'].max()
 
         # Changes
         change1d = self.get_change(df_hist_1mo.iloc[-1:])
