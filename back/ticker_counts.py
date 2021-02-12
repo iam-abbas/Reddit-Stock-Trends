@@ -15,14 +15,17 @@ Post = namedtuple('Post', 'id,title,score,comments,upvote_ratio,total_awards')
 
 
 class TickerCounts:
-    WEBSCRAPER_LIMIT = 2000
-    config = configparser.ConfigParser()
-    config.read('./config/config.ini')
-    stop_words = json.loads(config['FilteringOptions']['StopWords'])
-    block_words = json.loads(config['FilteringOptions']['BlockWords'])
-    subreddits = json.loads(config['FilteringOptions']['Subreddits'])
-    with open('./config/tickers.json') as f:
-        tickers = json.load(f)
+
+    def __init__(self):
+        self.webscraper_limit = 2000
+        config = configparser.ConfigParser()
+        config.read('./config/config.ini')
+        self.subreddits = json.loads(config['FilteringOptions']['Subreddits'])
+
+        self.stop_words = json.loads(config['FilteringOptions']['StopWords'])
+        self.block_words = json.loads(config['FilteringOptions']['BlockWords'])
+        with open('./config/tickers.json') as f:
+            self.tickers = json.load(f)
 
     def verify_ticker(self, tick):
         return tick in self.tickers
@@ -46,9 +49,9 @@ class TickerCounts:
         # Current it does fetch a lot of additional data like upvotes, comments, awards etc but not using anything apart from title for now
         reddit = praw.Reddit('ClientSecrets')
         subreddits = '+'.join(self.subreddits)
-        new_bets = reddit.subreddit(subreddits).new(limit=self.WEBSCRAPER_LIMIT)
+        new_bets = reddit.subreddit(subreddits).new(limit=self.webscraper_limit)
 
-        for post in tqdm(new_bets, desc='Selecting relevant data from webscraper', total=self.WEBSCRAPER_LIMIT):
+        for post in tqdm(new_bets, desc='Selecting relevant data from webscraper', total=self.webscraper_limit):
             yield Post(
                 post.id,
                 post.title,
