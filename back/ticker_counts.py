@@ -33,9 +33,10 @@ class TickerCounts:
         ticks = set(re.findall(pattern, str(text)))
         res = set()
         for tick in ticks:
-            if tick not in self.block_words and tick.lower() not in self.stop_words and tick:
-                tick = tick.upper()
-                res.add(tick)
+            if not tick or tick in self.block_words or tick.lower() in self.stop_words:
+                continue
+            tick = tick.upper()
+            res.add(tick)
         return res
 
     def _get_posts(self):
