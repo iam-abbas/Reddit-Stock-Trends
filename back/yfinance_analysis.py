@@ -21,6 +21,9 @@ class FinanceAnalysis:
         columns = ['Name', 'Industry', 'Previous Close', '5d Low', '5d High', '1d Change (%)', '5d Change (%)',
                    '1mo Change (%)']
         df_best = df_tick.head(best_n)
+
+        self.data = yf.download(df_best['Ticker'].tolist(), period='1mo', group_by='ticker', progress=False)
+
         df_best[columns] = df_best['Ticker'].progress_apply(self.get_ticker_info)
 
         # Save to file to load into yahoo analysis script
@@ -41,7 +44,7 @@ class FinanceAnalysis:
         ticker_name = ticker.info.get('longName')
         ticker_industry = ticker.info.get('industry')
 
-        df_hist_1mo = ticker.history(period='1mo')
+        df_hist_1mo = self.data[ticker.ticker]
         df_hist_5d = df_hist_1mo.iloc[-5:]
         df_hist_1d = df_hist_1mo.iloc[-1:]
 
