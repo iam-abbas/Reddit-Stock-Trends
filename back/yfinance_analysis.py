@@ -1,5 +1,6 @@
 import sys
 from datetime import datetime
+from tqdm import tqdm
 
 import pandas as pd
 import yfinance as yf
@@ -18,10 +19,11 @@ class FinanceAnalysis:
         df_tick = pd.read_csv(input_path).sort_values(by=['Mentions', 'Ticker'], ascending=False)
         df_tick.dropna(axis=1)
 
+        tqdm.pandas(desc = 'Requesting stock data')
         columns = ['Name', 'Industry', 'Previous Close', '5d Low', '5d High', '1d Change (%)', '5d Change (%)',
                    '1mo Change (%)']
         df_best = df_tick.head(best_n)
-        df_best[columns] = df_best['Ticker'].apply(self.get_ticker_info)
+        df_best[columns] = df_best['Ticker'].progress_apply(self.get_ticker_info)
 
         # Save to file to load into yahoo analysis script
         filename = f'df_best_{best_n}'
