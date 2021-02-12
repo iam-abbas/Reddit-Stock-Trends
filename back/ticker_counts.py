@@ -3,8 +3,7 @@ import datetime as dt
 import json
 import re
 from collections import Counter, namedtuple
-from functools import reduce
-from operator import add
+from itertools import chain
 from pathlib import Path
 from typing import Set
 
@@ -66,7 +65,7 @@ class TickerCounts:
         tickers = df_posts['title'].apply(self.extract_ticker)
 
         # Count number of occurrences of the Ticker and verify id the Ticker exists
-        counts = reduce(add, map(Counter, tickers))
+        counts = Counter(chain.from_iterable(tickers))
 
         verified_ticks = {}
         for ticker, ticker_count in tqdm(counts.items(), desc='Filtering verified ticks'):
