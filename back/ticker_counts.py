@@ -35,8 +35,7 @@ class TickerCounts:
         return ticks & self.keep_tickers  # Keep overlap
 
     def _get_posts(self):
-        # Scrape subreddits `r/robinhoodpennystocks` and `r/pennystocks`
-        # Current it does fetch a lot of additional data like upvotes, comments, awards etc but not using anything apart from title for now
+        # Scrape subreddits. Currently it fetches additional data, only using title for now
         reddit = praw.Reddit('ClientSecrets')
         subreddits = '+'.join(self.subreddits)
         new_bets = reddit.subreddit(subreddits).new(limit=self.webscraper_limit)
@@ -54,15 +53,13 @@ class TickerCounts:
     def get_data(self):
         df_posts = pd.DataFrame(self._get_posts())
 
-        # Extract tickers from all titles and create a new column
+        # Extract tickers from titles & count them
         tickers = df_posts['title'].apply(self.extract_ticker)
-
-        # Count number of occurrences of the Ticker and verify id the Ticker exists
         counts = Counter(chain.from_iterable(tickers))
 
-        # Create Datable of just mentions
+        # Create DataFrame of just mentions & remove any occurring less than 3 or less
         df_tick = pd.DataFrame(counts.items(), columns=['Ticker', 'Mentions'])
-        df_tick = df_tick[df_tick['Mentions'] > 3]  # If ticker is found more than 3 times and ticker is valid
+        df_tick = df_tick[df_tick['Mentions'] > 3]
         df_tick = df_tick.sort_values(by=['Mentions'], ascending=False)
 
         data_directory = Path('./data')
