@@ -42,8 +42,12 @@ There's also a JavaScript web app that shows some data visualizations if you don
 Once you finished running the scripts, you'll have to set up the local server
 ```bash
 cd back
-python wsgi.py
+python wsgi.py [path to data file]
 ```
+
+The argument `[path to data file]` is optional and defaults to `./data/df_best_25.csv`. If you fetched a different
+number of tickers in the `yfinance_analysis.py` script, you'll want to use this argument to point to the data file that
+was created (e.g., `python yfinance_analysis.py 50` –> `./data/df_best_50.csv`). 
 
 Then, launch the client
 ```bash
