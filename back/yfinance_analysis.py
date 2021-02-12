@@ -1,8 +1,7 @@
+import concurrent.futures
 import datetime as dt
 import sys
 from pathlib import Path
-from datetime import datetime
-from tqdm import tqdm
 
 import pandas as pd
 import yfinance as yf
@@ -17,11 +16,17 @@ class FinanceAnalysis:
 
         df_tick = pd.read_csv(input_path).sort_values(by=['Mentions', 'Ticker'], ascending=False)
 
-        tqdm.pandas(desc = 'Requesting stock data')
         columns = ['Name', 'Industry', 'Previous Close', '5d Low', '5d High', '1d Change (%)', '5d Change (%)',
                    '1mo Change (%)']
         df_best = df_tick.head(best_n)
-        df_best[columns] = df_best['Ticker'].progress_apply(self.get_ticker_info)
+
+        # Activate all tickers' info in parallel
+        self.tickers = yf.Tickers(df_best['Ticker'].tolist())
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.map(lambda t: t.info, self.tickers.tickers)
+        self.data = self.tickers.download(period='1mo', group_by='ticker', progress=True)
+
+        df_best[columns] = df_best['Ticker'].apply(self.get_ticker_info)
 
         # Save to file to load into yahoo analysis script
         output_path = data_directory / f'df_best_{best_n}.csv'
@@ -32,31 +37,30 @@ class FinanceAnalysis:
         """Use Yahoo Finance API to get the relevant data."""
         return round(((end - start) / start) * 100, 2)
 
-    def get_change(self, ticker: str, period: str = '1d') -> float:
-        data = yf.Ticker(ticker).history(period)
-        return self.calculate_change(
-            data['Open'].to_list()[0],
-            data['Close'].to_list()[-1]
-        )
+    def get_change(self, data) -> float:
+        return self.calculate_change(data['Open'][0], data['Close'][-1])
 
     def get_ticker_info(self, ticker):
         # Standard Data
-        info = yf.Ticker(ticker).info
-        ticker_name = info.get('longName')
-        ticker_industry = info.get('industry')
+        ticker = getattr(self.tickers.tickers, ticker)
+        ticker_name = ticker.info.get('longName')
+        ticker_industry = ticker.info.get('industry')
+
+        df_hist_1mo = self.data[ticker.ticker]
+        df_hist_5d = df_hist_1mo.iloc[-5:]
+        df_hist_1d = df_hist_1mo.iloc[-1:]
 
         # previous Day close
-        ticker_close = yf.Ticker(ticker).history(period='1d')['Close'].to_list()[-1]
+        ticker_close = df_hist_1mo['Close'][-1]
 
         # Highs and Lows
-        high_low = yf.Ticker(ticker).history(period='5d')
-        low5d = min(high_low['Low'].to_list())
-        high5d = max(high_low['High'].to_list())
+        low5d = df_hist_5d['Low'].min()
+        high5d = df_hist_5d['High'].max()
 
         # Changes
-        change1d = self.get_change(ticker)
-        change5d = self.get_change(ticker, '5d')
-        change1mo = self.get_change(ticker, '1mo')
+        change1d = self.get_change(df_hist_1d)
+        change5d = self.get_change(df_hist_5d)
+        change1mo = self.get_change(df_hist_1mo)
 
         return pd.Series([ticker_name, ticker_industry, ticker_close, low5d, high5d, change1d, change5d, change1mo])
 
