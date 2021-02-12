@@ -36,6 +36,9 @@ class TickerCounts:
             tick = tick.upper()
             if tick in self.block_words or tick in self.stop_words:
                 continue
+
+            if not self.verify_ticker(tick):
+                continue
             res.add(tick)
         return res
 
@@ -69,7 +72,7 @@ class TickerCounts:
         verified_ticks = {}
         for ticker, ticker_count in tqdm(counts.items(), desc='Filtering verified ticks'):
             # If ticker is found more than 3 times and ticker is valid
-            if ticker_count > 3 and self.verify_ticker(ticker):
+            if ticker_count > 3:
                 verified_ticks[ticker] = ticker_count
 
         # Create Datable of just mentions
