@@ -42,18 +42,20 @@ class FinanceAnalysis:
         ticker_industry = info.get('industry')
 
         df_hist_1mo = yf.Ticker(ticker).history(period='1mo')
+        df_hist_5d = df_hist_1mo.iloc[-5:]
+        df_hist_1d = df_hist_1mo.iloc[-1:]
+
         # previous Day close
         ticker_close = df_hist_1mo['Close'][-1]
 
         # Highs and Lows
-        high_low = df_hist_1mo.iloc[-5:]
-        low5d = high_low['Low'].min()
-        high5d = high_low['High'].max()
+        low5d = df_hist_5d['Low'].min()
+        high5d = df_hist_5d['High'].max()
 
         # Changes
-        change1d = self.get_change(df_hist_1mo.iloc[-1:])
-        change5d = self.get_change(df_hist_1mo.iloc[-5:])
-        change1mo = self.get_change(df_hist_1mo.iloc[:])
+        change1d = self.get_change(df_hist_1d)
+        change5d = self.get_change(df_hist_5d)
+        change1mo = self.get_change(df_hist_1mo)
 
         return pd.Series([ticker_name, ticker_industry, ticker_close, low5d, high5d, change1d, change5d, change1mo])
 
