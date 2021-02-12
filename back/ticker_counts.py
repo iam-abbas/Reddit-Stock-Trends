@@ -63,8 +63,7 @@ class TickerCounts:
         df_posts = pd.DataFrame(self._get_posts())
 
         # Extract tickers from all titles and create a new column
-        df_posts['Tickers'] = df_posts['title'].apply(self.extract_ticker)
-        tickers = df_posts['Tickers']
+        tickers = df_posts['title'].apply(self.extract_ticker)
 
         # Count number of occurrences of the Ticker and verify id the Ticker exists
         counts = reduce(add, map(Counter, tickers))
