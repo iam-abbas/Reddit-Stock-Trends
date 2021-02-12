@@ -22,27 +22,17 @@ class TickerCounts:
         config.read('./config/config.ini')
         self.subreddits = json.loads(config['FilteringOptions']['Subreddits'])
 
-        self.stop_words = json.loads(config['FilteringOptions']['StopWords'])
-        self.block_words = json.loads(config['FilteringOptions']['BlockWords'])
+        stop_words = set(json.loads(config['FilteringOptions']['StopWords']))
+        block_words = set(json.loads(config['FilteringOptions']['BlockWords']))
         with open('./config/tickers.json') as f:
-            self.tickers = json.load(f)
-
-    def verify_ticker(self, tick):
-        return tick in self.tickers
+            tickers = set(json.load(f))
+        exclude = stop_words | block_words
+        self.keep_tickers = tickers - exclude  # Remove words/tickers in exclude
 
     def extract_ticker(self, text: str, pattern: str = r'(?<=\$)[A-Za-z]+|[A-Z]{2,}') -> Set[str]:
         """Simple Regex to get tickers from text."""
         ticks = set(re.findall(pattern, str(text)))
-        res = set()
-        for tick in ticks:
-            tick = tick.upper()
-            if tick in self.block_words or tick in self.stop_words:
-                continue
-
-            if not self.verify_ticker(tick):
-                continue
-            res.add(tick)
-        return res
+        return ticks & self.keep_tickers  # Keep overlap
 
     def _get_posts(self):
         # Scrape subreddits `r/robinhoodpennystocks` and `r/pennystocks`
