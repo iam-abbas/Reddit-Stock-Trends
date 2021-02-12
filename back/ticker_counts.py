@@ -67,14 +67,9 @@ class TickerCounts:
         # Count number of occurrences of the Ticker and verify id the Ticker exists
         counts = Counter(chain.from_iterable(tickers))
 
-        verified_ticks = {}
-        for ticker, ticker_count in tqdm(counts.items(), desc='Filtering verified ticks'):
-            # If ticker is found more than 3 times and ticker is valid
-            if ticker_count > 3:
-                verified_ticks[ticker] = ticker_count
-
         # Create Datable of just mentions
-        df_tick = pd.DataFrame(verified_ticks.items(), columns=['Ticker', 'Mentions'])
+        df_tick = pd.DataFrame(counts.items(), columns=['Ticker', 'Mentions'])
+        df_tick = df_tick[df_tick['Mentions'] > 3]  # If ticker is found more than 3 times and ticker is valid
         df_tick = df_tick.sort_values(by=['Mentions'], ascending=False)
 
         data_directory = Path('./data')
