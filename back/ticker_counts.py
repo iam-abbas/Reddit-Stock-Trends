@@ -34,11 +34,8 @@ class TickerCounts:
         res = set()
         for tick in ticks:
             if tick not in self.block_words and tick.lower() not in self.stop_words and tick:
-                try:
-                    tick = tick.upper()
-                    res.add(tick)
-                except Exception as e:
-                    print(e)
+                tick = tick.upper()
+                res.add(tick)
         return res
 
     def _get_posts(self):
