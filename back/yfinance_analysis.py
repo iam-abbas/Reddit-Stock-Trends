@@ -1,4 +1,6 @@
+import datetime as dt
 import sys
+from pathlib import Path
 from datetime import datetime
 from tqdm import tqdm
 
@@ -10,14 +12,10 @@ class FinanceAnalysis:
 
     def analyze(self, best_n=25):
         # Load data from file, generate data by running the `ticker_counts.py` script
-        date_created = datetime.today().strftime('%Y-%m-%d')
-        filename = f'{date_created}_tick_df'
-        data_directory = './data'
-
-        input_path = f'{data_directory}/{filename}.csv'
+        data_directory = Path('./data')
+        input_path = data_directory / f'{dt.date.today()}_tick_df.csv'
 
         df_tick = pd.read_csv(input_path).sort_values(by=['Mentions', 'Ticker'], ascending=False)
-        df_tick.dropna(axis=1)
 
         tqdm.pandas(desc = 'Requesting stock data')
         columns = ['Name', 'Industry', 'Previous Close', '5d Low', '5d High', '1d Change (%)', '5d Change (%)',
@@ -26,9 +24,7 @@ class FinanceAnalysis:
         df_best[columns] = df_best['Ticker'].progress_apply(self.get_ticker_info)
 
         # Save to file to load into yahoo analysis script
-        filename = f'df_best_{best_n}'
-        output_path = f'{data_directory}/{filename}.csv'
-
+        output_path = data_directory / f'df_best_{best_n}.csv'
         df_best.to_csv(output_path, index=False)
         print(df_best.head())
 
@@ -37,9 +33,10 @@ class FinanceAnalysis:
         return round(((end - start) / start) * 100, 2)
 
     def get_change(self, ticker: str, period: str = '1d') -> float:
+        data = yf.Ticker(ticker).history(period)
         return self.calculate_change(
-            yf.Ticker(ticker).history(period)['Open'].to_list()[0],
-            yf.Ticker(ticker).history(period)['Close'].to_list()[-1]
+            data['Open'].to_list()[0],
+            data['Close'].to_list()[-1]
         )
 
     def get_ticker_info(self, ticker):
