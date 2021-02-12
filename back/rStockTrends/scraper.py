@@ -67,7 +67,7 @@ class Scraper:
         counts = reduce(add, map(Counter, tickers))
 
         # Create Datable of just mentions
-        df_tick = pd.DataFrame(counts,
+        df_tick = pd.DataFrame(counts.items(),
                                columns=['Ticker', 'Mentions'])
         df_tick.sort_values(by=['Mentions'], inplace=True, ascending=False)
         df_tick.reset_index(inplace=True, drop=True)
