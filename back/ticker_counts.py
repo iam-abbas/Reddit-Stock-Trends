@@ -33,9 +33,9 @@ class TickerCounts:
         ticks = set(re.findall(pattern, str(text)))
         res = set()
         for tick in ticks:
-            if not tick or tick in self.block_words or tick.lower() in self.stop_words:
-                continue
             tick = tick.upper()
+            if tick in self.block_words or tick in self.stop_words:
+                continue
             res.add(tick)
         return res
 
