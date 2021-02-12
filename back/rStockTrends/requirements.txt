@@ -20,3 +20,4 @@ websocket-client==0.57.0
 yfinance==0.1.55
 flask==1.1.2
 flask_cors==3.0.10
+transformers==4.3.2
