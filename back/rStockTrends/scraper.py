@@ -16,7 +16,7 @@ import yfinance_utils
 
 class Scraper:
 
-    def __init__(self, NLP=False, scrapeHours=1):
+    def __init__(self, NLP=False, scrapeHours=24):
         self.WEBSCRAPER_LIMIT = 2000
         self.ScraperUtils = scraper_utils.ScraperUtils()
         self.Processor = data_processor.DataProcessor(NLP)
