@@ -32,8 +32,7 @@ class FinanceAnalysis:
         """Use Yahoo Finance API to get the relevant data."""
         return round(((end - start) / start) * 100, 2)
 
-    def get_change(self, ticker: str, period: str = '1d') -> float:
-        data = yf.Ticker(ticker).history(period)
+    def get_change(self, data) -> float:
         return self.calculate_change(
             data['Open'].to_list()[0],
             data['Close'].to_list()[-1]
@@ -45,18 +44,19 @@ class FinanceAnalysis:
         ticker_name = info.get('longName')
         ticker_industry = info.get('industry')
 
+        df_hist_1mo = yf.Ticker(ticker).history(period='1mo')
         # previous Day close
-        ticker_close = yf.Ticker(ticker).history(period='1d')['Close'].to_list()[-1]
+        ticker_close = df_hist_1mo['Close'].to_list()[-1]
 
         # Highs and Lows
-        high_low = yf.Ticker(ticker).history(period='5d')
+        high_low = df_hist_1mo.iloc[-5:]
         low5d = min(high_low['Low'].to_list())
         high5d = max(high_low['High'].to_list())
 
         # Changes
-        change1d = self.get_change(ticker)
-        change5d = self.get_change(ticker, '5d')
-        change1mo = self.get_change(ticker, '1mo')
+        change1d = self.get_change(df_hist_1mo.iloc[-1:])
+        change5d = self.get_change(df_hist_1mo.iloc[-5:])
+        change1mo = self.get_change(df_hist_1mo.iloc[:])
 
         return pd.Series([ticker_name, ticker_industry, ticker_close, low5d, high5d, change1d, change5d, change1mo])
 
