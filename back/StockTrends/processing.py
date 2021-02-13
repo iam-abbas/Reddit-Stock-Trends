@@ -1,10 +1,10 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
-import scraper_utils
+from . import main_utils
 
 class DataProcessor:
 
     def __init__(self, NLP=False, cuda=False):
-        self.ScraperUtils = scraper_utils.ScraperUtils()
+        self.ScraperUtils = main_utils.ScraperUtils()
         if NLP:
             tokenizer = AutoTokenizer.from_pretrained("ProsusAI/finbert")
             model = AutoModelForSequenceClassification.from_pretrained(
