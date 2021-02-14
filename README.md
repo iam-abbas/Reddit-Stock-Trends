@@ -10,13 +10,11 @@ See trending stock tickers on Reddit and check Stock perfomance <br><br>
 
 </p>
 
-## Usage
+## Backend
 
-#### Reddit API
-- Get your reddit API credentials from [here](https://www.reddit.com/prefs/apps)
+### Reddit API
+- Get your reddit API credentials from [here](https://www.reddit.com/prefs/apps).
 - Follow [this](https://towardsdatascience.com/scraping-reddit-with-praw-76efc1d1e1d9) article to get your credentials.
-
-#### Running Scripts
 - Go to `back/` directory.
 - Create a `praw.ini` file with the following
 ```
@@ -26,27 +24,28 @@ client_secret=<your client secret>
 user_agent=<your user agent>
 ```
 Note that the title of this section, `ClientSecrets`, is important because `ticker_counts.py` will specifically look for that title in the `praw.ini` file.
-- Install required modules using `pip install -r requirements.txt`
-- Run `ticker_counts.py` first
-- Now run `yfinance_analysis.py`
-- Currently the default number of tickers analyzed is 25 but `yfinance` does accept a number as an argument if you want more or less tickers
--- eg/ `python yfinance_analysis.py 20` return 20 tickers analyzed.
+
+### Local usage
+- Install required modules using `pip install -r requirements.txt`.
+- Run `ticker_counts.py` first.
+- Now run `yfinance_analysis.py`.
 - You will be able to find your results in `data/` directory.
+- [Optional] Run `wsgi.py` to start a server that returns the data in JSON format. This step will generate the csv files if they don't already exist.
+
+### Docker usage
+- Requires Docker 17.09.0+ and docker-compose 1.17.0+
+- Run `docker-compose up backend` to generate csv files and start the backend sever.
 
 ---
-## Web app
-There's also a JavaScript web app that shows some data visualizations if you don't want to read the csv files.
+## Frontend
+There's also a JavaScript web app that shows some data visualizations.
 
-### Usage
-Once you finished running the scripts, you'll have to set up the local server
+### Local usage
+Start the local server. This server will generate the csv files if they don't already exist.
 ```bash
 cd back
-python wsgi.py [path to data file]
+python wsgi.py
 ```
-
-The argument `[path to data file]` is optional and defaults to `./data/df_best_25.csv`. If you fetched a different
-number of tickers in the `yfinance_analysis.py` script, you'll want to use this argument to point to the data file that
-was created (e.g., `python yfinance_analysis.py 50` –> `./data/df_best_50.csv`). 
 
 Then, launch the client
 ```bash
@@ -56,6 +55,10 @@ npm install
 npm run serve
 ```
 You can change the env variables if you need to
+
+### Docker usage
+- Requires Docker 17.09.0+ and docker-compose 1.17.0+
+- Run `docker-compose up frontend` and navigate to http://localhost:8080/. This requires the backend server to already be running. If the backend is not running, run ` docker-compose up` to start both services.
 
 ---
 #### Ticker Symbol API - EOD Historical Data
