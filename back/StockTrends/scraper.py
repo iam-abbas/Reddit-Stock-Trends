@@ -66,7 +66,7 @@ class StockTrends:
 
         return df_posts
 
-    def TickersFromPosts(self, df_posts):
+    def tickers_from_posts(self, df_posts):
 
         try:
             tickers = df_posts.tickers.to_list()
@@ -94,7 +94,7 @@ class StockTrends:
 
         return df_tick
 
-    def getFinanceData(self, df_tick):
+    def get_finance_data(self, df_tick):
 
         Finance = yfinance_analysis.FinanceAnalysis(df_tick)
 
@@ -102,7 +102,7 @@ class StockTrends:
 
         return finance_df
 
-    def dataWithStats(self, data_df, df_posts):
+    def data_with_stats(self, data_df, df_posts):
         df_posts.tickers = df_posts.tickers.apply(list)
         res = df_posts.set_index(["id",	"title", "rating", "sentiment",	"flair", "credibility"])[
             'tickers'].apply(pd.Series).stack()
@@ -131,13 +131,13 @@ class StockTrends:
         final_df.fillna("N/A", inplace=True)
         return final_df
 
-    def get_data(self, withFinance=False, withStats=False):
+    def get_data(self, with_finance=False, with_stats=False):
         df_posts = self.scrape_posts()
-        data_df = self.TickersFromPosts(df_posts)
+        data_df = self.tickers_from_posts(df_posts)
 
-        if withFinance:
-            data_df = self.getFinanceData(data_df)
-        if withStats:
-            data_df = self.dataWithStats(data_df, df_posts)
+        if with_finance:
+            data_df = self.get_finance_data(data_df)
+        if with_stats:
+            data_df = self.data_with_stats(data_df, df_posts)
 
         return data_df
