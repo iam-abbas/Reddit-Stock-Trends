@@ -100,10 +100,10 @@ export default class App extends Vue {
 
   getTextColor(val: number) {
     return {
-      greenL: val >= 250,
-      greenM: val < 250 && val >= 100,
-      greenH: val < 100 && val >= 50,
-      greenX: val < 50 && val > 0,
+      greenX: val >= 250,
+      greenH: val < 250 && val >= 100,
+      greenM: val < 100 && val >= 50,
+      greenL: val < 50 && val > 0,
       redL: val <= 0 && val > -50,
       redM: val <= -50 && val > -100,
       redH: val <= -100 && val > -250,
