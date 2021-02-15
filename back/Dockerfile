@@ -13,5 +13,8 @@ RUN pip install -r requirements.txt
 # Clean the workspace
 RUN rm requirements.txt
 
+# Copy the sources files into the image
+COPY . .
+
 # Command to run on container start
 CMD [ "python", "./wsgi.py" ]
