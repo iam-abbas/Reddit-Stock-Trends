@@ -1,25 +1,19 @@
-version: '3.4'
+version: "3.4"
 
 services:
 
   backend:
-    image: reddit-stock-backend
     build:
       context: ./back/
-      dockerfile: Dockerfile
-      network: host
     ports:
-      - '5000:5000'
+      - "5000:5000"
     volumes:
-      - './back:/code'
+      - "./back:/code"
 
   frontend:
-    image: reddit-stock-frontend
     build:
       context: ./front/
-      dockerfile: Dockerfile
-      network: host
     ports:
-      - '8080:8080'
+      - "8080:8080"
     volumes:
-      - './front:/code'
+      - "./front:/code"
