@@ -12,5 +12,8 @@ RUN npm install
 
 WORKDIR /code
 
+# Copy the sources files into the image
+COPY . .
+
 # Command to run on container start
 CMD [ "sh", "-c", "cp -r /tmp/node_modules /code/node_modules && npm run serve" ]
