@@ -52,4 +52,4 @@ def get_basic_data() -> str:
 
 	first_idx = (page-1)*items_per_page
 
-	return combined_df.iloc[first_idx:first_idx+items_per_page].to_json(orient = "records")
+	return jsonify(combined_df.iloc[first_idx:first_idx+items_per_page].to_dict(orient = "records"))
