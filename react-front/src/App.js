@@ -18,15 +18,14 @@ function App() {
     <>
       <ContainerWrapper>
         <StyledImg src={logo} alt="logo" />
+        <Table
+          getTableProps={getTableProps}
+          getTableBodyProps={getTableBodyProps}
+          headerGroups={headerGroups}
+          rows={rows}
+          prepareRow={prepareRow}
+        />
       </ContainerWrapper>
-
-      <Table
-        getTableProps={getTableProps}
-        getTableBodyProps={getTableBodyProps}
-        headerGroups={headerGroups}
-        rows={rows}
-        prepareRow={prepareRow}
-      />
     </>
   );
 }
@@ -40,5 +39,6 @@ const StyledImg = styled.img`
 `;
 const ContainerWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `;
