@@ -133,7 +133,16 @@ function App() {
                       background: "papayawhip",
                     }}
                   >
-                    {cell.render("Cell")}
+                    {cell.column.Header === "Ticker" ? (
+                      <a
+                        href={`https://tradingview.com/symbols/${cell.value}`}
+                        target="_blank"
+                      >
+                        {cell.render("Cell")}
+                      </a>
+                    ) : (
+                      cell.render("Cell")
+                    )}
                   </td>
                 );
               })}
