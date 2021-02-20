@@ -6,7 +6,14 @@ export default function Table({
   prepareRow,
 }) {
   return (
-    <table {...getTableProps()} style={{ border: "solid 1px blue" }}>
+    <table
+      {...getTableProps()}
+      style={
+        {
+          /* border: "solid 1px blue" */
+        }
+      }
+    >
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
@@ -14,13 +21,15 @@ export default function Table({
               <th
                 {...column.getHeaderProps(column.getSortByToggleProps())}
                 style={{
-                  borderBottom: "solid 3px red",
+                  borderBottom: "solid 1px white",
 
-                  background: "aliceblue",
+                  background: "none",
 
-                  color: "black",
+                  color: "white",
 
                   fontWeight: "bold",
+
+                  fontFamily: "Noto Sans",
                 }}
               >
                 {column.render("Header")}
