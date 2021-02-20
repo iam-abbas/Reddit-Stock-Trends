@@ -10,6 +10,7 @@
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.2",
     "react-table": "^7.6.3",
+    "styled-components": "^5.2.1",
     "web-vitals": "^1.1.0"
   },
   "scripts": {
