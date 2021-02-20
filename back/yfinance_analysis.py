@@ -52,7 +52,6 @@ class FinanceAnalysis:
             ticker_industry = ticker.info.get('industry')
         except:
             ticker_industry = 'missing_industry'
-
         df_hist_1mo = self.data[ticker.ticker]
         df_hist_5d = df_hist_1mo.iloc[-5:]
         df_hist_1d = df_hist_1mo.iloc[-1:]

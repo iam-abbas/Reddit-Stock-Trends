@@ -1,6 +1,7 @@
 certifi==2020.12.5
 chardet==4.0.0
 configparser==5.0.1
+html5lib==1.1
 idna==2.10
 lxml==4.6.2
 multitasking==0.0.9
@@ -20,3 +21,4 @@ websocket-client==0.57.0
 yfinance==0.1.55
 flask==1.1.2
 flask_cors==3.0.10
+beautifulsoup4==4.9.3
