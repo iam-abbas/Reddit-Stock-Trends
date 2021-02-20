@@ -6,14 +6,7 @@ export default function Table({
   prepareRow,
 }) {
   return (
-    <table
-      {...getTableProps()}
-      style={
-        {
-          /* border: "solid 1px blue" */
-        }
-      }
-    >
+    <table {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
@@ -22,14 +15,9 @@ export default function Table({
                 {...column.getHeaderProps(column.getSortByToggleProps())}
                 style={{
                   borderBottom: "solid 1px white",
-
                   background: "none",
-
                   color: "white",
-
                   fontWeight: "bold",
-
-                  fontFamily: "Noto Sans",
                 }}
               >
                 {column.render("Header")}
@@ -53,11 +41,9 @@ export default function Table({
                   <td
                     {...cell.getCellProps()}
                     style={{
+                      color: "white",
                       padding: "10px",
-
-                      border: "solid 1px gray",
-
-                      background: "papayawhip",
+                      textAlign: "center",
                     }}
                   >
                     {cell.column.Header === "Ticker" ? (
