@@ -44,7 +44,8 @@ def get_basic_data() -> str:
 	combined_df.sort_values(by=["Mentions"], inplace=True, ascending=False)
 
 	# Get the current page to return
-	items_per_page = 10
+	items_per_page = len(combined_df)
+	#items_per_page = 30
 	page = 1
 	page_str = request.args.get('page')
 	if page_str is not None:
@@ -52,4 +53,5 @@ def get_basic_data() -> str:
 
 	first_idx = (page-1)*items_per_page
 
-	return combined_df.iloc[first_idx:first_idx+items_per_page].to_json(orient = "records")
+	
+	return jsonify(data = combined_df.where(pd.notnull(combined_df), None).to_dict(orient = "records"))
