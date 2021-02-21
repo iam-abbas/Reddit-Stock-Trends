@@ -32,8 +32,9 @@ class FinanceAnalysis:
         output_path = data_directory / f'{dt.date.today()}_financial_df.csv'
         df_best.to_csv(output_path, index=False)
         print(df_best.head())
-
-    def calculate_change(self, start: float, end: float) -> float:
+    
+    @staticmethod
+    def calculate_change(start: float, end: float) -> float:
         """Use Yahoo Finance API to get the relevant data."""
         return round(((end - start) / start) * 100, 2)
 
