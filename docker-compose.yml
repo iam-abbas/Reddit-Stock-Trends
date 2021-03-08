@@ -6,7 +6,7 @@ services:
     build:
       context: ./back/
     ports:
-      - "5000:5000"
+      - "5006:5006"
     volumes:
       - "./back:/code"
 
