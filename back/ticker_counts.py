@@ -7,7 +7,6 @@ import os
 from collections import Counter, namedtuple
 from itertools import chain
 from pathlib import Path
-from collections import Counter
 from functools import reduce
 from operator import add
 from typing import Set
