@@ -1,5 +1,0 @@
-praw==7.0
-numpy
-pandas
-yfinance
-tqdm

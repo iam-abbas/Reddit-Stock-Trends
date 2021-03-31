@@ -1,0 +1,19 @@
+version: "3.4"
+
+services:
+
+  backend:
+    build:
+      context: ./back/
+    ports:
+      - "5006:5006"
+    volumes:
+      - "./back:/code"
+
+  frontend:
+    build:
+      context: ./front/
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./front:/code"
