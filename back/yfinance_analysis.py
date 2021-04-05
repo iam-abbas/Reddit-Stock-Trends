@@ -30,7 +30,7 @@ class FinanceAnalysis:
 
         # Save to file to load into yahoo analysis script
         output_path = data_directory / f'{dt.date.today()}_financial_df.csv'
-        df_best.to_csv(output_path, index=False)
+        df_best.to_csv(output_path, index=False,float_format='%.4f')
         print(df_best.head())
     
     @staticmethod
