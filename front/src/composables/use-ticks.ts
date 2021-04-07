@@ -25,7 +25,7 @@ export function useArtists() {
   });
 
   async function get(page: number) {
-    const tempData: [] = (await getBestTicksData(page)).data;
+    const tempData: [] = (await getBestTicksData(page)).data.data;
     state.list = [];
 
     tempData.forEach((elem: any) => {
