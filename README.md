@@ -134,6 +134,10 @@ Suggestions are appreciated.
 If you like what I am doing, consider buying me a coffee this helps me give more time to this project and improve. <br><br>
 <a href="https://www.buymeacoffee.com/abbas" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
+### Sponsors
+
+TickerHype: https://tickerhype.com/
+
 ---
 
 If you decide to use this anywhere please give a credit to [@abbasmdj](https://twitter.com/abbasmdj) on twitter, also If you like my work, check out other projects on my [Github](https://github.com/iam-abbas) and my [personal blog](https://abbasmj.com).
