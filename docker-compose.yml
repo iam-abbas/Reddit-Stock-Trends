@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.9"
 
 services:
 
@@ -19,6 +19,8 @@ services:
       - "8080:8080"
     volumes:
       - "./front:/code"
+    depends_on:
+      - backend
 
   react-front:
     environment:
@@ -29,4 +31,6 @@ services:
       - "3000:3000"
     volumes:
       - "./react-front:/code"
+    depends_on:
+      - backend
   
