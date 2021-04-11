@@ -36,13 +36,6 @@ Note that the title of this section, `ClientSecrets`, is important because `tick
 - You will be able to find your results in `data/` directory.
 - [Optional] Run `wsgi.py` to start a server that returns the data in JSON format. This step will generate the csv files if they don't already exist.
 
-### Docker usage
-
-- Requires Docker 17.09.0+ and docker-compose 1.17.0+
-- Run `docker-compose up backend` to generate csv files and start the backend sever.
-
----
-
 ## Frontend - Vue
 
 There's also a JavaScript web app that shows some data visualizations.
@@ -70,7 +63,16 @@ You can change the env variables if you need to
 ### Docker usage
 
 - Requires Docker 17.09.0+ and docker-compose 1.17.0+
-- Run `docker-compose up frontend` and navigate to http://localhost:8080/. This requires the backend server to already be running. If the backend is not running, run ` docker-compose up` to start both services.
+- make sure you have .env or a system wide export for the var VUE_APP_API_URL, see env.example
+- `docker-compose up -d` to start all services in the background. (-d == detatched)
+- `docker-compose up <servicename>` to bring up a specific service.
+- `docker-compose rm` removes the image
+- `docker-compose ps` to list running services
+- `docker-compose up --build` if you made changes to the compose or dockerfiles and need it built into a new image.
+- `docker-compose build --no-cache` if you made changes to specific files and docker does not recognize as new thereby reusing cached layers incorrectly.  This takes about 3 minutes on a gaming pc with 0 docker tuning.
+- `compose.yml` determines service names and which ports are bound to your host. By default front=8080 back=5006.
+- Once `up` navigate to http://localhost:8080/. 
+- `docker-compose stop` stops all services
 
 ---
 
